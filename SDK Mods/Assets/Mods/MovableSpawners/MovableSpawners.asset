@@ -57,7 +57,7 @@ MonoBehaviour:
   - path: Assets/Mods/MovableSpawners/Localization/Localization.csv
     hash: 9912D1E280B740DC506BA52194CC71A1680201C6489BC18C24B5A7FB515E8530
   - path: Assets/Mods/MovableSpawners/MovableSpawners.asset
-    hash: 0C3F6A79B4E1B2918D70A1B503799989A19B770C3678C23C893542EC832AF303
+    hash: 7F104D7BB941CABA97A7B052F274C32EEE51D2DA50C846D0BED65EEC2ACE1004
   - path: Assets/Mods/MovableSpawners/MovableSpawners_modio.asset
     hash: CB6779F49BADCF35DB199716925F534B8E5D81065F9271F4C6B64788751EE9F3
   - path: Assets/Mods/MovableSpawners/Textures/icon-big.png

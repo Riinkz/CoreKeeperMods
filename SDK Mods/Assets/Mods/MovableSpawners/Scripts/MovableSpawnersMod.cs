@@ -87,7 +87,8 @@ namespace MovableSpawners
             }
             
             entitymanager.AddComponent<IsInCombatCD>(entity);
-            entitymanager.AddComponent<AnimationCD>(entity);
+            //TODo is it needed?
+           //entitymanager.AddComponent<AnimationCD>(entity);
             entitymanager.AddComponent<StateInfoCD>(entity);
             entitymanager.AddComponent<IdleStateCD>(entity);
             entitymanager.AddComponent<StunnedStateCD>(entity);
