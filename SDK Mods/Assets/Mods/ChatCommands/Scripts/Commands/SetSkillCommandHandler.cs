@@ -8,32 +8,42 @@ using UnityEngine;
 
 namespace ChatCommands.Chat.Commands
 {
-    public class SetSkillCommandHandler : IClientCommandHandler
+    public class SetSkillCommandHandler : IServerCommandHandler
     {
-        public CommandOutput Execute(string[] parameters)
+        public CommandOutput Execute(string[] parameters, Entity sender)
         {
             if (parameters.Length != 2)
                 return new CommandOutput("Invalid arguments for command. Correct format:\n/setSkill {skillName} {level}", CommandStatus.Error);
 
-            if (int.TryParse(parameters[1], out int level))
-            {
-                if (level is < 0 or > 100) return "Invalid level provided. Should be a number 0-100.";
-                PlayerController player = Players.GetCurrentPlayer();
-                if (player == null) return "There was an issue, try again later.";
+            if (!int.TryParse(parameters[1], out int level)) 
+                return new CommandOutput("Invalid level provided. Should be a number 0-100.", CommandStatus.Error);
+            
+            if (level is < 0 or > 100) return "Invalid level provided. Should be a number 0-100.";
+            
+            Entity player = sender.GetPlayerEntity();
+            if (player == Entity.Null) return "There was an issue, try again later.";
 
-                if (Enum.TryParse(parameters[0], out SkillID skillID))
-                {
-                    player.SetSkillLevel(skillID, level);
-                }
-                else
-                {
-                    return new CommandOutput($"Skill '{parameters[0]}' is not valid!", CommandStatus.Error);
-                }
+            if (!Enum.TryParse(parameters[0], out SkillID skillID))
+                return new CommandOutput($"Skill '{parameters[0]}' is not valid!", CommandStatus.Error);
 
-                return $"{parameters[0]} successfully set to level {level}";
-            }
+            int skillFromLevel = SkillExtensions.GetSkillFromLevel(skillID, level);
+            SetSkillValue(player, skillID, skillFromLevel);
+            return $"{parameters[0]} successfully set to level {level}";
+        }
 
-            return new CommandOutput("Invalid level provided. Should be a number 0-100.", CommandStatus.Error);
+        public static void SetSkillValue(Entity player, SkillID skillID, int amount)
+        {
+            World serverWorld = API.Server.World;
+            EntityManager entityManager = serverWorld.EntityManager;
+
+            var skillBuffer = entityManager.GetBuffer<SkillBuffer>(player);
+            var skillConditionsBuffer = entityManager.GetBuffer<SkillConditionsBuffer>(player);
+
+            ref SkillBuffer elementAt = ref skillBuffer.ElementAt((int)skillID);
+            elementAt.Value = amount;
+            
+            ConditionData conditionDataForSkill = SkillExtensions.GetConditionDataForSkill(skillID, elementAt.Value);
+            EntityUtility.SetSkillCondition(skillConditionsBuffer, conditionDataForSkill);
         }
 
         public string GetDescription()

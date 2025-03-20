@@ -9,17 +9,17 @@ using Unity.Physics;
 
 namespace ChatCommands.Chat.Commands
 {
-    public class HealCommandHandler : IClientCommandHandler
+    public class HealCommandHandler : IServerCommandHandler
     {
-        public CommandOutput Execute(string[] parameters)
+        public CommandOutput Execute(string[] parameters, Entity sender)
         {
-            if (parameters.Length != 1) return Heal();
-            try
+            if (parameters.Length > 0 &&
+                int.TryParse(parameters[0], out int amount))
             {
-                int amount = int.Parse(parameters[0]);
-                return Heal(amount);
+                return Heal(sender, amount);
             }
-            catch { return Heal(); }
+            
+            return Heal(sender);
         }
 
         public string GetDescription()
@@ -32,12 +32,19 @@ namespace ChatCommands.Chat.Commands
             return new[] { "heal" };
         }
 
-        private CommandOutput Heal(int amount = -1)
+        private CommandOutput Heal(Entity sender, int amount = -1)
         {
-            PlayerController player = Players.GetCurrentPlayer();
-            int healAmount = amount < 0 ? (player.GetMaxHealth() - player.currentHealth) : amount;
+            var player = sender.GetPlayerEntity();
             
-            player.playerCommandSystem.SetHealth(player.entity, player.currentHealth + healAmount);
+            World serverWorld = API.Server.World;
+            EntityManager entityManager = serverWorld.EntityManager;
+            
+            HealthCD health = entityManager.GetComponentData<HealthCD>(player);
+            int healAmount = amount < 0 ? health.maxHealth : amount;
+            
+            health.health = math.clamp(health.health + healAmount, 0, health.maxHealth);
+            entityManager.SetComponentData(player, health);
+            
             return $"Successfully healed {healAmount} HP";
         }
     }

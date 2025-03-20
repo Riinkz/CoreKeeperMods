@@ -7,12 +7,17 @@ using Unity.Entities;
 
 namespace ChatCommands.Chat.Commands
 {
-    public class ResetSkillsCommandHandler : IClientCommandHandler
+    public class ResetSkillsCommandHandler : IServerCommandHandler
     {
-        public CommandOutput Execute(string[] parameters)
+        public CommandOutput Execute(string[] parameters, Entity sender)
         {
-            PlayerController player = Players.GetCurrentPlayer();
-            player.ResetAllSkills();
+            Entity player = sender.GetPlayerEntity();
+            
+            for (int i = 0; i < (int)SkillID.NUM_SKILLS; ++i)
+            {
+                SetSkillCommandHandler.SetSkillValue(player, (SkillID) i, 0);
+            }
+            
             return "Successfully reset all skills";
         }
 

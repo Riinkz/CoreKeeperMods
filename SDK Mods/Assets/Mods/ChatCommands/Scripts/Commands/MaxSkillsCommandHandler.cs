@@ -7,12 +7,19 @@ using Unity.Entities;
 
 namespace ChatCommands.Chat.Commands
 {
-    public class MaxSkillsCommandHandler : IClientCommandHandler
+    public class MaxSkillsCommandHandler : IServerCommandHandler
     {
-        public CommandOutput Execute(string[] parameters)
+        public CommandOutput Execute(string[] parameters, Entity sender)
         {
-            PlayerController player = Players.GetCurrentPlayer();
-            player.MaxOutAllSkills();
+            Entity player = sender.GetPlayerEntity();
+            
+            for (int i = 0; i < (int)SkillID.NUM_SKILLS; ++i)
+            {
+                SkillID skillID = (SkillID) i;
+                int maxSkillLevel = SkillExtensions.GetMaxSkillLevel(skillID);
+                SetSkillCommandHandler.SetSkillValue(player, skillID, maxSkillLevel);
+            }
+            
             return "Successfully maxed all skills";
         }
 

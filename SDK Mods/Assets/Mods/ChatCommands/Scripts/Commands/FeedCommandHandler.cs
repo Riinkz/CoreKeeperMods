@@ -6,17 +6,17 @@ using Unity.Mathematics;
 
 namespace ChatCommands.Chat.Commands
 {
-    public class FeedCommandHandler : IClientCommandHandler
+    public class FeedCommandHandler : IServerCommandHandler
     {
-        public CommandOutput Execute(string[] parameters)
+        public CommandOutput Execute(string[] parameters, Entity sender)
         {
-            if (parameters.Length != 1) return Feed();
-            try
+            if (parameters.Length > 0 &&
+                int.TryParse(parameters[0], out int amount))
             {
-                int amount = int.Parse(parameters[0]);
-                return Feed(amount);
+                return Feed(sender, amount);
             }
-            catch { return Feed(); }
+            
+            return Feed(sender);
         }
 
         public string GetDescription()
@@ -29,12 +29,19 @@ namespace ChatCommands.Chat.Commands
             return new[] { "feed" };
         }
 
-        static CommandOutput Feed(int amount = -1)
+        static CommandOutput Feed(Entity sender, int amount = -1)
         {
-            PlayerController player = Players.GetCurrentPlayer();
-            int hungerAmount = amount < 0 ? (100 - player.hungerComponent.hunger) : amount;
+            var player = sender.GetPlayerEntity();
             
-            player.playerCommandSystem.AddHunger(player.entity, hungerAmount);
+            World serverWorld = API.Server.World;
+            EntityManager entityManager = serverWorld.EntityManager;
+            
+            HungerCD hunger = entityManager.GetComponentData<HungerCD>(player);
+            int hungerAmount = amount < 0 ? 100 : amount;
+            
+            hunger.hunger = math.clamp(hunger.hunger + hungerAmount, 0, 100);
+            entityManager.SetComponentData(player, hunger);
+            
             return $"Successfully fed {hungerAmount} food";
         }
     }

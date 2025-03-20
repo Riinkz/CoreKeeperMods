@@ -3,18 +3,21 @@ using CoreLib.Commands;
 using CoreLib.Commands.Communication;
 using CoreLib.Util;
 using PlayerState;
+using PugMod;
+using Unity.Entities;
 
 namespace ChatCommands.Chat.Commands
 {
-    public class NoclipCommand : IClientCommandHandler
+    public class NoclipCommand : IServerCommandHandler
     {
-        public bool noclipActive;
-
-        public CommandOutput Execute(string[] parameters)
+        public CommandOutput Execute(string[] parameters, Entity sender)
         {
-            PlayerController player = Players.GetCurrentPlayer();
+            Entity player = sender.GetPlayerEntity();
+            World serverWorld = API.Server.World;
+            EntityManager entityManager = serverWorld.EntityManager;
 
-            noclipActive = EntityUtility.GetComponentData<PlayerStateCD>(player.entity, player.world).HasAnyState(PlayerStateEnum.NoClip);
+            var playerState = entityManager.GetComponentData<PlayerStateCD>(player);
+            var noclipActive = playerState.HasAnyState(PlayerStateEnum.NoClip);
 
             switch (parameters.Length)
             {
@@ -26,20 +29,21 @@ namespace ChatCommands.Chat.Commands
 
                     break;
                 case 2 when parameters[0].Equals("speed"):
-                    if (float.TryParse(parameters[1], out float multiplier))
-                    {
-                        multiplier = Math.Clamp(multiplier, 0.5f, 10f);
-                        player.noClipMovementSpeedMultipler = 6.25f * multiplier;
-                        return $"noclip speed multiplier now is {multiplier}";
-                    }
+                    if (!float.TryParse(parameters[1], out float multiplier))
+                        return new CommandOutput($"{parameters[1]} is not a valid number!", CommandStatus.Error);
 
-                    return new CommandOutput($"{parameters[1]} is not a valid number!", CommandStatus.Error);
+                    multiplier = Math.Clamp(multiplier, 0.5f, 10f);
+
+                    var movement = entityManager.GetComponentData<PlayerMovementCD>(player);
+                    movement.noClipMovementSpeedMultipler = 12.5f * multiplier;
+                    entityManager.SetComponentData(player, movement);
+
+                    return $"noclip speed multiplier now is {multiplier}";
             }
 
-            if (noclipActive)
-                player.playerCommandSystem.SetPlayerState(player.entity, PlayerStateEnum.NoClip);
-            else
-                player.playerCommandSystem.SetPlayerState(player.entity, PlayerStateEnum.Walk);
+
+            playerState.SetNextState(noclipActive ? PlayerStateEnum.NoClip : PlayerStateEnum.Walk);
+            entityManager.SetComponentData(player, playerState);
 
             return $"Noclip is {(noclipActive ? "active" : "inactive")}";
         }
