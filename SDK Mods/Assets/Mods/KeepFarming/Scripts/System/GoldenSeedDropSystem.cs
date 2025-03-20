@@ -1,4 +1,5 @@
 ﻿using KeepFarming.Components;
+using PugProperties;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
@@ -57,8 +58,10 @@ namespace KeepFarming
 
                     if (SystemAPI.HasComponent<PlantCD>(entity))
                     {
+                        var properties = SystemAPI.GetComponent<ObjectPropertiesCD>(entity);
+                        
                         if (SystemAPI.HasComponent<GrowingCD>(entity) && 
-                            !SystemAPI.GetComponent<GrowingCD>(entity).hasFinishedGrowing)
+                            !SystemAPI.GetComponent<GrowingCD>(entity).HasFinishedGrowing(properties))
                         {
                             chance = 1f;
                         }

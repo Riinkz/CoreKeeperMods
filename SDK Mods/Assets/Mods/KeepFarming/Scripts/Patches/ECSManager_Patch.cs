@@ -221,11 +221,11 @@ namespace KeepFarming
 
         private static void AddPersistentGoldenPlant(GameObject prefabGo)
         {
-            var growingAuthoring = prefabGo.GetComponent<GrowingAuthoring>();
+            var growingAuthoring = prefabGo.GetComponent<PlantAuthoring>();
             if (growingAuthoring == null) return;
             
             // Is it a complete plant?
-            if (growingAuthoring.currentStage == growingAuthoring.highestStage) return;
+            if (growingAuthoring.growingSettings.currentStage == growingAuthoring.growingSettings.highestStage) return;
 
             GameObject newPrefab = Object.Instantiate(prefabGo, null);
             newPrefab.hideFlags = HideFlags.HideAndDontSave;
@@ -263,15 +263,15 @@ namespace KeepFarming
                 objectName = objectAuthoring.objectName;
             }
 
-            var dropLoot = newPrefab.GetComponent<DropsLootAuthoring>();
+            var dropLoot = newPrefab.GetComponent<DropLootAuthoring>();
 
-            if (dropLoot.Values.Count > 0)
+            if (dropLoot.customLoot.Values.Count > 0)
             {
                 var dropGoldenSeed = newPrefab.AddComponent<DropsGoldenSeedAuthoring>();
 
-                dropGoldenSeed.chance = dropLoot.chance;
-                dropGoldenSeed.seedId = dropLoot.Values[0].lootDropID;
-                dropGoldenSeed.amount = dropLoot.Values[0].amount;
+                dropGoldenSeed.chance = dropLoot.customLoot.chance;
+                dropGoldenSeed.seedId = dropLoot.customLoot.Values[0].lootDropID;
+                dropGoldenSeed.amount = dropLoot.customLoot.Values[0].amount;
             }
             Object.Destroy(dropLoot);
 

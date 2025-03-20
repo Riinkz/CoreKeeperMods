@@ -101,7 +101,7 @@ namespace KeepFarming
                     }
                 }
             })
-                .WithAll<InventoryCD>()
+                .WithAll<InventoryBuffer>()
                 .WithEntityQueryOptions(EntityQueryOptions.IncludeDisabledEntities)
                 .WithoutBurst()
                 .Run();

@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1089255589903170731}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.6684313, y: 2.7379684, z: -0.24811935}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7498525708771006698
 MonoBehaviour:
@@ -68,7 +68,6 @@ MonoBehaviour:
   m_Script: {fileID: 244469479, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onlyExistsInSeason: 0
   sellValue: -1
   buyValueMultiplier: 1
   icon: {fileID: 1917733133, guid: bf6606719879ef043b6f817c935bc5ad, type: 3}
@@ -76,6 +75,6 @@ MonoBehaviour:
   smallIcon: {fileID: 1944590144, guid: bf6606719879ef043b6f817c935bc5ad, type: 3}
   isStackable: 0
   requiredObjectsToCraft:
-  - objectName: KeepFarming:AnyFruit
+  - objectName: None
     amount: 1
   craftingTime: 1

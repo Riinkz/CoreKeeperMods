@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using PugProperties;
+using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
@@ -35,9 +36,11 @@ namespace KeepFarming
                     in ObjectDataCD objectData,
                     in LocalTransform transform,
                     in DynamicBuffer<DropsLootBuffer> dropsLootBuffer,
-                    in GrowingCD growingCd) =>
+                    in GrowingCD growingCd,
+                    in ObjectPropertiesCD properties) =>
                 {
-                    if (!growingCd.hasFinishedGrowing) return;
+                    // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+                    if (!growingCd.HasFinishedGrowing(properties)) return;
                     
                     Random random = Random.CreateFromIndex(seed ^ (uint)entity.Index ^ (uint)entity.Version);
                     KilledByPlayerCD killedByPlayer = SystemAPI.HasComponent<KilledByPlayerCD>(entity)
