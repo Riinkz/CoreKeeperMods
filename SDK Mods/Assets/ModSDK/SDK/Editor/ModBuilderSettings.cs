@@ -17,11 +17,11 @@ public class ModBuilderSettings : ScriptableObject
 
 	public bool forceReimport = true;
 	public bool buildBundles = true;
-	public bool buildLinux = false;
-	
+	public bool cacheBundles = false;
+	public bool buildLinux = true;
 	public bool buildBurst = true;
-	public bool cachedBuild = false;
 	
+	[HideInInspector]
 	public List<ModAsset> assets;
 	[HideInInspector]
 	public bool lastBuildLinux = false;
