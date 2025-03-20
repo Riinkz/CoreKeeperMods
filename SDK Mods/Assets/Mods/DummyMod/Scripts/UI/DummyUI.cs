@@ -76,8 +76,8 @@ namespace DummyMod.UI
             
             if (!entityManager.Exists(entity)) return;
             
-            PlayerController player = Manager.main.player;
-            player.playerCommandSystem.DestroyEntity(entity, player.entity);
+            ClientModCommandSystem commandSystem = world.GetExistingSystemManaged<ClientModCommandSystem>();
+            commandSystem.KillDummy(entity);
             HideUI();
         }
     }

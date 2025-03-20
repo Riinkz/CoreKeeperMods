@@ -31,6 +31,15 @@ namespace DummyMod
             });
         }
 
+        public void KillDummy(Entity target)
+        {
+            rpcQueue.Enqueue(new DummyCommandRPC()
+            {
+                commandType = DummyCommandType.DESTROY_DUMMY,
+                entity0 = target
+            });
+        }
+
         #endregion
 
         protected override void OnUpdate()

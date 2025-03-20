@@ -38,6 +38,11 @@ namespace DummyMod
                                 DynamicBuffer<DummyDamageBuffer> damageBuffer = SystemAPI.GetBuffer<DummyDamageBuffer>(rpc.entity0);
                                 damageBuffer.Clear();
                                 break;
+                            
+                            case DummyCommandType.DESTROY_DUMMY:
+                                var target = rpc.entity0;
+                                ecb.DestroyEntity(target);
+                                break;
                         }
                     }
 
