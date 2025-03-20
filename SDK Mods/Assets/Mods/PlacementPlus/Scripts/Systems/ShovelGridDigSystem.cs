@@ -7,7 +7,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.NetCode;
-
+/*
 namespace PlacementPlus.Systems
 {
     [UpdateBefore(typeof(TileDamageSystem))]
@@ -23,7 +23,6 @@ namespace PlacementPlus.Systems
             RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
             RequireForUpdate<TileWithTilesetToObjectDataMapCD>();
             RequireForUpdate<SubMapRegistry>();
-            RequireForUpdate<TilePriorityLookupSingleton>();
 
             DigUpdateJob digUpdateJob = default;
             digUpdateJob.shared = new PlayerAttackShared(ref CheckedStateRef);
@@ -225,4 +224,4 @@ namespace PlacementPlus.Systems
             }
         }
     }
-}
+}*/

@@ -1,4 +1,5 @@
 ﻿using CoreLib.Util.Extensions;
+using Mods.PlacementPlus.Scripts.Util;
 using PlacementPlus.Access;
 using PlacementPlus.Components;
 using PlayerEquipment;
@@ -21,9 +22,17 @@ namespace PlacementPlus
             in PlacementPlusState state)
         {
             ref PlacementCD local = ref equipmentUpdateAspect.placementCD.ValueRW;
-            int2 currentSize = PlacementHandler.GetCurrentSize(placementPrefab, equipmentUpdateAspect.equippedObjectCD.ValueRO.containedObject.objectData,
-                in local, equipmentUpdateSharedData.databaseBank, equipmentUpdateLookupData.directionBasedOnVariationLookup,
-                equipmentUpdateLookupData.objectPropertiesLookup, equipmentUpdateLookupData.directionLookup);
+            int2 currentSize = PlacementHandler.GetCurrentSize(
+                placementPrefab,
+                equipmentUpdateAspect.equippedObjectCD.ValueRO.containedObject.objectData,
+                in local,
+                equipmentUpdateAspect.placementSizeByEquipmentTypeBuffer,
+                equipmentUpdateAspect.equipmentSlotCD.ValueRO,
+                equipmentUpdateSharedData.databaseBank, 
+                equipmentUpdateLookupData.directionBasedOnVariationLookup,
+                equipmentUpdateLookupData.objectPropertiesLookup,
+                equipmentUpdateLookupData.directionLookup,
+                equipmentUpdateLookupData.sizeVariationLookup);
 
             if (state.size > 0)
             {

@@ -7,7 +7,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Physics;
-
+/*
 namespace PlacementPlus
 {
     internal static class ShovelLogic
@@ -333,4 +333,4 @@ namespace PlacementPlus
             ghostEffectEventBuffer.AddToRingBuffer(ref valueRW, ghostEffectEventBuffer2);
         }
     }
-}
+}*/

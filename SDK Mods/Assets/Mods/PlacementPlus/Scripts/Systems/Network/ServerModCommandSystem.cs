@@ -2,6 +2,7 @@
 using System.Text;
 using PlacementPlus.Commands;
 using PlacementPlus.Components;
+using PlayerEquipment;
 using PugTilemap;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -56,11 +57,41 @@ namespace PlacementPlus.Systems.Network
                     }
                     
                     var placementState = SystemAPI.GetComponent<PlacementPlusState>(rpc.player);
+                    var inventory = SystemAPI.GetBuffer<ContainedObjectsBuffer>(rpc.player);
+                    var clientInput = SystemAPI.GetComponent<ClientInput>(rpc.player);
+                    ref var item = ref inventory.ElementAt(clientInput.equippedSlotIndex);
 
                     switch (rpc.commandType)
                     {
                         case ModCommandType.CHANGE_SIZE:
+                            
+                            ref var objectInfo = ref PugDatabase.GetEntityObjectInfo(item.objectID, databaseLocal, item.variation);
+                            if (objectInfo.objectID == ObjectID.None) return;
 
+                            Entity prefabEntity = objectInfo.prefabEntities[0];
+
+                            if (SystemAPI.HasComponent<ResizableTileSizeCD>(prefabEntity))
+                            {
+                                var resizableTileSizeCD = SystemAPI.GetComponent<ResizableTileSizeCD>(prefabEntity);
+
+                                var placementSizeBuffer = SystemAPI.GetBuffer<PlacementSizeByEquipmentTypeBuffer>(rpc.player);
+                                var equipmentSlot = SystemAPI.GetComponent<EquipmentSlotCD>(rpc.player);
+                                ref var element = ref placementSizeBuffer.GetElementForEquipment(equipmentSlot.slotType);
+                                
+                                var size = (int)element.sizeVariationToPlace;
+                                
+                                size -= rpc.valueChange * (resizableTileSizeCD.StartOnSmallestSize ? 1 : -1);
+                                
+                                if (size <= 0)
+                                    size = 0;
+                                if (size >= objectInfo.prefabTileSize.x - 1)
+                                    size = objectInfo.prefabTileSize.x - 1;
+
+                                element.sizeVariationToPlace = (byte)size;
+                                        
+                                break;
+                            }
+                            
                             placementState.ChangeSize(rpc.valueChange, currentTick);
                             ecb.SetComponent(rpc.player, placementState);
                             break;
@@ -72,11 +103,6 @@ namespace PlacementPlus.Systems.Network
                                 adminLevel = SystemAPI.GetComponent<ConnectionAdminLevelCD>(req.SourceConnection).adminPrivileges;
 
                             if (guestMode && adminLevel <= 0) break;
-
-                            var inventory = SystemAPI.GetBuffer<ContainedObjectsBuffer>(rpc.player);
-                            var clientInput = SystemAPI.GetComponent<ClientInput>(rpc.player);
-
-                            ref var item = ref inventory.ElementAt(clientInput.equippedSlotIndex);
 
                             var resultMessage = ToggleToolMode(
                                 colorIndexLookupLocal,

@@ -127,6 +127,7 @@ namespace PlacementPlus.Systems
                 adaptiveEntityBufferLookup = SystemAPI.GetBufferLookup<AdaptiveEntityBuffer>(),
                 directionBasedOnVariationLookup = SystemAPI.GetComponentLookup<DirectionBasedOnVariationCD>(),
                 directionLookup = SystemAPI.GetComponentLookup<DirectionCD>(),
+                sizeVariationLookup = SystemAPI.GetComponentLookup<ResizableTileSizeCD>(),
                 playerGhostLookup = SystemAPI.GetComponentLookup<PlayerGhost>(),
                 minionLookup = SystemAPI.GetComponentLookup<MinionCD>(),
                 indestructibleLookup = SystemAPI.GetComponentLookup<IndestructibleCD>(),
@@ -161,12 +162,14 @@ namespace PlacementPlus.Systems
                 anvilLookup = SystemAPI.GetComponentLookup<AnvilCD>(),
                 waypointLookup = SystemAPI.GetComponentLookup<WayPointCD>(),
                 craftingLookup = SystemAPI.GetComponentLookup<CraftingCD>(),
+                proximityTriggerLookup = SystemAPI.GetComponentLookup<ProximityTriggerCD>(),
                 triggerAnimationOnDeathLookup = SystemAPI.GetComponentLookup<TriggerAnimationOnDeathCD>(),
                 moveToPredictedByEntityDestroyedLookup = SystemAPI.GetComponentLookup<MoveToPredictedByEntityDestroyedCD>(),
                 hasExplodedLookup = SystemAPI.GetComponentLookup<HasExplodedCD>()
             };
 
-            var damageReductionLookup = SystemAPI.GetComponentLookup<DamageReductionCD>();
+            var ppLookups = new PlacementPlusLookups();
+            ppLookups.Init(ref CheckedStateRef);
             
             Entities.ForEach((
                     EquipmentUpdateAspect equipmentAspect,
@@ -178,8 +181,8 @@ namespace PlacementPlus.Systems
                 {
                     if ((state.size == 0 || state.mode == BrushMode.NONE) && !state.replaceTiles) return;
 
-                    bool interactHeldRaw = clientInput.IsButtonSet(CommandInputButtonNames.Interact_HeldDown);
-                    bool secondInteractHeldRaw = clientInput.IsButtonSet(CommandInputButtonNames.SecondInteract_HeldDown);
+                    bool interactHeldRaw = clientInput.IsButtonStateSet(CommandInputButtonStateNames.Interact_HeldDown);
+                    bool secondInteractHeldRaw = clientInput.IsButtonStateSet(CommandInputButtonStateNames.SecondInteract_HeldDown);
                     if (!PlayerController.CurrentStateAllowInteractions(
                             worldInfoCD, equipmentAspect.playerGhost.ValueRO,
                             equipmentAspect.playerStateCD.ValueRO,
@@ -209,7 +212,7 @@ namespace PlacementPlus.Systems
                             equipmentShared,
                             lookupData,
                             givesConditionsLookup,
-                            damageReductionLookup,
+                            ppLookups,
                             state,
                             secondInteractHeld
                         );
@@ -217,7 +220,7 @@ namespace PlacementPlus.Systems
 
                         equipmentAspect.equipmentSlotCD.ValueRW.secondInteractIsPendingToBeUsed = false;
                     }
-                    else if (slotType == EquipmentSlotType.ShovelSlot ||
+                    /*else if (slotType == EquipmentSlotType.ShovelSlot ||
                              slotType == (EquipmentSlotType)101)
                     {
                         var success = ShovelLogic.UpdateShovelPlus(
@@ -231,7 +234,7 @@ namespace PlacementPlus.Systems
                         if (!success) return;
 
                         equipmentAspect.equipmentSlotCD.ValueRW.secondInteractIsPendingToBeUsed = false;
-                    }
+                    }*/
                 })
                 .WithoutBurst()
                 .Schedule();

@@ -56,7 +56,7 @@ namespace PlacementPlus
                 
                 __instance.SetValue("textToPrint", lastMessage);
                 __instance.text.localize = false;
-                __instance.textOutline.localize = false;
+                //__instance.textOutline.localize = false;
                 ApplyEmote(__instance);
                 lastMessage = "";
                 return false;
@@ -69,8 +69,8 @@ namespace PlacementPlus
         {
             string textToPrint = __instance.GetValue<string>("textToPrint");
             __instance.text.Render(textToPrint, true);
-            __instance.textOutline.Render(textToPrint, true);
-            __instance.textOutline.SetTempColor(Color.black);
+            //__instance.textOutline.Render(textToPrint, true);
+            //__instance.textOutline.SetTempColor(Color.black);
         }
     }
 }

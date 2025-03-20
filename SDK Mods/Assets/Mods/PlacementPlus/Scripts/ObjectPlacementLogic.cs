@@ -21,7 +21,7 @@ namespace PlacementPlus
             EquipmentUpdateAspect equipmentAspect,
             EquipmentUpdateSharedData equipmentShared,
             LookupEquipmentUpdateData lookupData, BufferLookup<GivesConditionsWhenEquippedBuffer> conditionsLookup,
-            ComponentLookup<DamageReductionCD> damageReductionLookup,
+            PlacementPlusLookups ppLookups,
             PlacementPlusState state,
             bool secondInteractHeld
         )
@@ -61,7 +61,7 @@ namespace PlacementPlus
                 equipmentShared,
                 lookupData,
                 conditionsLookup,
-                damageReductionLookup,
+                ppLookups,
                 state
             );
         }
@@ -95,7 +95,7 @@ namespace PlacementPlus
             in EquipmentUpdateAspect equipmentAspect,
             EquipmentUpdateSharedData sharedData,
             LookupEquipmentUpdateData lookupData, BufferLookup<GivesConditionsWhenEquippedBuffer> conditionsLookup,
-            ComponentLookup<DamageReductionCD> damageReductionLookup,
+            PlacementPlusLookups ppLookups,
             PlacementPlusState state
         )
         {
@@ -138,7 +138,7 @@ namespace PlacementPlus
                     sharedData,
                     lookupData,
                     conditionsLookup,
-                    damageReductionLookup,
+                    ppLookups,
                     state,
                     tilesChecked,
                     ref entityObjectInfo,
@@ -219,7 +219,7 @@ namespace PlacementPlus
             in EquipmentUpdateAspect equipmentAspect,
             EquipmentUpdateSharedData sharedData,
             LookupEquipmentUpdateData lookupData, BufferLookup<GivesConditionsWhenEquippedBuffer> conditionsLookup,
-            ComponentLookup<DamageReductionCD> damageReductionLookup,
+            PlacementPlusLookups ppLookups,
             PlacementPlusState state,
             NativeHashMap<int3, bool> tilesChecked,
             ref PugDatabase.EntityObjectInfo entityObjectInfo,
@@ -249,7 +249,7 @@ namespace PlacementPlus
                         sharedData,
                         lookupData,
                         conditionsLookup,
-                        damageReductionLookup,
+                        ppLookups,
                         ref entityObjectInfo,
                         ref placement,
                         false,
@@ -389,10 +389,42 @@ namespace PlacementPlus
                     placement.currentPrefabVariation);
 
                 ecb.SetComponent(entity, LocalTransform.FromPosition(position));
-                ecb.AddComponent(entity, new PlacedByEntityCD
+                ComponentLookup<RandomCD> componentLookup = ppLookups.randomLookup;
+                if (componentLookup.HasComponent(equipmentAspect.entity))
                 {
-                    Value = equipmentAspect.entity
-                });
+                    componentLookup = ppLookups.randomLookup;
+                    ref RandomCD valueRW = ref componentLookup.GetRefRW(equipmentAspect.entity).ValueRW;
+
+                    ecb.SetComponent(entity, new RandomCD
+                    {
+                        Value = PugRandom.InheritRngFromEntity(ref valueRW.Value)
+                    });
+                }
+                ComponentLookup<OwnerCD> ownerLookup = ppLookups.ownerLookup;
+                if (ownerLookup.HasComponent(equipmentPrefab))
+                {
+                    ecb.SetComponent(entity, new OwnerCD
+                    {
+                        owner = equipmentAspect.entity
+                    });
+                }
+                ComponentLookup<IsExplosiveCD> isExplosiveLookup = ppLookups.isExplosiveLookup;
+                if (isExplosiveLookup.TryGetComponent(equipmentPrefab, out var isExplosiveCD))
+                {
+                    if (isExplosiveCD.bombInheritsFaction)
+                    {
+                        ComponentLookup<FactionCD> factionLookup = ppLookups.factionLookup;
+                        if (factionLookup.HasComponent(equipmentPrefab))
+                        {
+                            EntityUtility.InheritFaction(ecb, equipmentAspect.entity, entity, ppLookups.factionLookup);
+                        }
+                    }
+                    BufferLookup<SummarizedConditionsBuffer> summarizedConditionsBufferLookup = lookupData.summarizedConditionsBufferLookup;
+                    if (summarizedConditionsBufferLookup.HasBuffer(equipmentPrefab))
+                    {
+                        EntityUtility.InheritConditionsForBomb(ecb, equipmentAspect.entity, entity, lookupData.summarizedConditionsBufferLookup);
+                    }
+                }
 
                 ecb.AddComponent<DestroyEntityIfPlacementNotValidCD>(entity);
                 if (math.any(direction != 0f))
@@ -432,7 +464,7 @@ namespace PlacementPlus
             EquipmentUpdateSharedData sharedData,
             LookupEquipmentUpdateData lookupData,
             BufferLookup<GivesConditionsWhenEquippedBuffer> conditionsLookup,
-            ComponentLookup<DamageReductionCD> damageReductionLookup,
+            PlacementPlusLookups ppLookups,
             ref PugDatabase.EntityObjectInfo entityObjectInfo,
             ref PlacementCD placement,
             bool doConsume,
@@ -497,7 +529,7 @@ namespace PlacementPlus
             {
                 if (pickaxeSlot == -1) return false;
 
-                var reduction = damageReductionLookup[itemEntity];
+                var reduction = ppLookups.damageReductionLookup[itemEntity];
                 if (pickaxeDamage - reduction.reduction <= 0) return false;
 
                 usedPickaxe = true;
@@ -653,7 +685,7 @@ namespace PlacementPlus
                 state,
                 pos,
                 ref objectToPlaceInfo);
-            bool flag = equipmentAspect.clientInput.ValueRO.IsButtonSet(CommandInputButtonNames.SecondInteract_Pressed) ||
+            bool flag = equipmentAspect.clientInput.ValueRO.IsButtonStateSet(CommandInputButtonStateNames.SecondInteract_Pressed) ||
                         (targetTileToPlace != TileType.wall && targetTileToPlace != TileType.ground) ||
                         (targetTileToPlace == TileType.wall && valueRW.previouslyPlacedTileType == TileType.wall) ||
                         (targetTileToPlace == TileType.ground && valueRW.previouslyPlacedTileType == TileType.ground) ||

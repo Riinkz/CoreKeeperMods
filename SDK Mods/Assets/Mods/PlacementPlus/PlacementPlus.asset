@@ -23,6 +23,7 @@ MonoBehaviour:
     files:
     - path: Localization/Localization.csv
     - path: Scripts/Scripts/Util/ReflectionExtensions.cs
+    - path: Scripts/Scripts/Util/PlacementPlusLookups.cs
     - path: Scripts/Scripts/Util/MyPlacementHandler.cs
     - path: Scripts/Scripts/Util/HelperLogic.cs
     - path: Scripts/Scripts/Util/Extensions.cs
@@ -56,8 +57,6 @@ MonoBehaviour:
     - path: Scripts/Generated/PlacementPlusLateSystem__System_15056617330.g.cs
     - path: Scripts/Generated/PlacementPlusSystem__System_11066732170.g.cs
     - path: Scripts/Generated/ServerModCommandSystem__System_16204881150.g.cs
-    - path: Scripts/Generated/ShovelGridDigSystem__JobEntity_157905902360.g.cs
-    - path: Scripts/Generated/ShovelGridDigSystem__System_15790590230.g.cs
     - path: Scripts/Generated/GhostComponentSerializerCollection.cs
     - path: Scripts/Generated/PlacementPlus.Commands_PlacementMessageRPCCommandSerializer.cs
     - path: Scripts/Generated/PlacementPlus.Commands_PlacementPlusRPCCommandSerializer.cs
@@ -71,14 +70,14 @@ MonoBehaviour:
   modPath: Assets/Mods\PlacementPlus
   forceReimport: 1
   buildBundles: 0
+  cacheBundles: 0
   buildLinux: 1
   buildBurst: 1
-  cachedBuild: 0
   assets:
   - path: Assets/Mods/PlacementPlus/Localization/Localization.csv
     hash: A79CE4BF333ECF825F413550BDC90BECE513BC838688D5E185FC57CB1B45259E
   - path: Assets/Mods/PlacementPlus/PlacementPlus.asset
-    hash: 8A2AA58D9298FBC6D3D6668A7AD10A3894288B959AC461375A7E048C5ED37C0D
+    hash: A6E3D1272DA054707AB80B840C9DAEC7C9209F2D284D9981CB125DBABDAA8FB8
   - path: Assets/Mods/PlacementPlus/PlacementPlus_modio.asset
     hash: A128470398E45D199BC8F51C4121614407A547D6A264DE9A21BD5E57DC90B8C6
   - path: Assets/Mods/PlacementPlus/todo.txt
