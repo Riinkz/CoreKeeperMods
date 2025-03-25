@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdb89f0a3ed349468023ba7361badee2, type: 3}
+  m_Name: WrenchWorkbench
+  m_EditorClassIdentifier: 
+  itemId: SecureAttachment:WrenchWorkbench
+  bigIcon: {fileID: -990479668, guid: 97fdeb9efa812fd468a2b9ba7ff82281, type: 3}
+  smallIcon: {fileID: -516623663, guid: 97fdeb9efa812fd468a2b9ba7ff82281, type: 3}
+  texture: {fileID: 0}
+  assetSkin: {fileID: 11400000, guid: 8c4ac50d83c9da64f97d98970be97d74, type: 2}
+  bindToRootWorkbench: 1
+  recipe:
+  - objectName: Wood
+    amount: 8
+  canCraft:
+  - objectName: SecureAttachment:WoodenWrench
+    amount: 1
+  - objectName: SecureAttachment:Wrench
+    amount: 1
+  relatedWorkbenches: []
+  title: 
+  leftTitle: 
+  rightTitle: 
+  skin: 0

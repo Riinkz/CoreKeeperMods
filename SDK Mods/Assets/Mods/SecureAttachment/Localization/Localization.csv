@@ -1,0 +1,7 @@
+Key	Type	Desc	English	German
+Items/SecureAttachment:Wrench	Text	Wrench	Iron Wrench	Iron Wrench
+Items/SecureAttachment:WrenchDesc	Text	Wrench Desc	Use this tool to unmount machinery and equipment	Use this tool to unmount machinery and equipment
+Items/SecureAttachment:WoodenWrench	Text	Wooden Wrench	Wooden Wrench	Wooden Wrench
+Items/SecureAttachment:WoodenWrenchDesc	Text	Wooden Wrench Desc	Basic tool made from wood, that can unmount some equipment	Basic tool made from wood, that can unmount some equipment
+Items/SecureAttachment:WrenchWorkbench	Text	Wrench Workbench	Wrench Workbench	Wrench Workbench
+Items/SecureAttachment:WrenchWorkbenchDesc	Text	Wrench Workbench Desc	Use this workbench to create wrenches!	Use this workbench to create wrenches!

@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc43e4983a160e543856e5ba0421c9e1, type: 3}
+  m_Name: SecureAttachment
+  m_EditorClassIdentifier: 
+  metadata:
+    guid: e042d3d4e3174daab6dc10eb322c5ab6
+    name: SecureAttachment
+    skipSafetyChecks: 0
+    disableScripts: 0
+    accessesExtraAssemblies: 1
+    disableHarmonyPatching: 0
+    requiredOn: 0
+    files:
+    - path: Localization/Localization.csv
+    - path: Scripts/Scripts/WrenchSlotLogic.cs
+    - path: Scripts/Scripts/WrenchEquipmentSlot.cs
+    - path: Scripts/Scripts/UnmountEffect.cs
+    - path: Scripts/Scripts/SecureAttachmentMod.cs
+    - path: Scripts/Scripts/Components/WrenchCDAuthoring.cs
+    - path: Scripts/Scripts/Components/MountedCDAuthoring.cs
+    - path: Bundles/SecureAttachment_Windows.assetbundle
+    - path: Bundles/SecureAttachment_Linux.assetbundle
+    dependencies:
+    - modName: CoreLib
+      required: 1
+    - modName: CoreLib.Entity
+      required: 1
+    - modName: CoreLib.Equipment
+      required: 1
+    - modName: CoreLib.Audio
+      required: 1
+  modPath: Assets\Mods\SecureAttachment
+  forceReimport: 1
+  buildBundles: 1
+  cacheBundles: 0
+  buildLinux: 1
+  buildBurst: 1
+  assets:
+  - path: Assets/Mods/SecureAttachment/CrowbarSlot.prefab
+    hash: A3F86A065D2FCDE16E1EFF1884543C2B733FFCEBE14E35992AE5C94099EF17AE
+  - path: Assets/Mods/SecureAttachment/Item/WoodenWrench.prefab
+    hash: 16FC9B97FB3635C94BDB41318C8EB6FE725E88CBF71C976130AE7728A895A6E9
+  - path: Assets/Mods/SecureAttachment/Item/Wrench.prefab
+    hash: B98DB1396FFD25F09F52B9FAAC69AFDE447EFD032BDD9B8AA5181267461164FC
+  - path: Assets/Mods/SecureAttachment/Item/WrenchWorkbench.asset
+    hash: 96E278AC9DEC6AB040EF69F0B0C8C692AA9F54AE5E20237A634585BDA0889E07
+  - path: Assets/Mods/SecureAttachment/Localization/Localization.csv
+    hash: C135FD94AA52CEDCE546F6C936C55B50F642FF1305379B69317DCB18AF90D833
+  - path: Assets/Mods/SecureAttachment/SecureAttachment.asset
+    hash: 2E722A9B0121A86969F69D9A6D50F5EE33CE164832F26CDE1257F87C2A837B96
+  - path: Assets/Mods/SecureAttachment/SecureAttachment_modio.asset
+    hash: 89978AAD6860F9926915D335B3EDA1D65745F637427F0443B649811DB57FFBDF
+  - path: Assets/Mods/SecureAttachment/SpriteAssetManifest.asset
+    hash: 497BA3269B5E53AB60E3428C11982EC7685C6C1A3D89A9AEEFB89C3404947C80
+  - path: Assets/Mods/SecureAttachment/Textures/wb-0.png
+    hash: CC73F77F79D0F20FCAC9215D7A290A2D54E7D124812A1AC9F2F2DC40BBDA3430
+  - path: Assets/Mods/SecureAttachment/Textures/wb-1.png
+    hash: E867C0175AABAB81604D8FE09A88A09ABEBCF733944538D79F90D586A8D070AE
+  - path: Assets/Mods/SecureAttachment/Textures/wb-2.png
+    hash: 299EEB8652975D6B5EF584EA1089AC3D13AFD07E868826313E250B08B2772D9F
+  - path: Assets/Mods/SecureAttachment/Textures/wb-3.png
+    hash: 2FBFD5E86E29BE379751BFE9064813EC4FD34B807D7A8EC0241DF363377BB098
+  - path: Assets/Mods/SecureAttachment/Textures/wb-icon.png
+    hash: 0A8812287E1D5B63BF795B260BB441B51CA586460F88957AC73D484E6DFABED8
+  - path: Assets/Mods/SecureAttachment/Textures/woodenWrench.png
+    hash: 851987F9CA403812D6CA56A05742701F353249EFA2394AD2F7D15EC865FF0884
+  - path: Assets/Mods/SecureAttachment/Textures/wrench.png
+    hash: 8E333164E3F267D78C00BC2631F72752BAF5CD2DC7DF4A3ABF6F50CEA9131F6C
+  - path: Assets/Mods/SecureAttachment/Textures/WrenchWorkbenchSkin.asset
+    hash: 365209DA293BD70BDF1791A6721624948586D6398800E52168E28EEB5FA6FCD7
+  - path: Assets/Mods/SecureAttachment/wrench-sound.ogg
+    hash: 42FFB49855DFA224A5C387F74F8097A43575EA0202A203FC3031D68D9FB65F12
+  lastBuildLinux: 1
