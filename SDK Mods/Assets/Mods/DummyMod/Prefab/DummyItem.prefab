@@ -20,22 +20,19 @@ GameObject:
   - component: {fileID: 114716709423320655}
   - component: {fileID: 114855499059021080}
   - component: {fileID: 114073873616023817}
-  - component: {fileID: 114724559256931504}
-  - component: {fileID: 114378629189375117}
   - component: {fileID: 7071715807773103313}
   - component: {fileID: 881898493577746402}
   - component: {fileID: 4014761255401663681}
   - component: {fileID: 8432270837391878973}
   - component: {fileID: 1133485972362148781}
-  - component: {fileID: 4907264644030368970}
   - component: {fileID: 9131798582782731204}
   - component: {fileID: 6443954341265133456}
   - component: {fileID: 6467545257263412825}
   - component: {fileID: 3408452410834206746}
   - component: {fileID: 2975659086408752802}
   - component: {fileID: 8707560192038489190}
-  - component: {fileID: 4113831804933025142}
-  - component: {fileID: 6863528782699798710}
+  - component: {fileID: 8365828615642464507}
+  - component: {fileID: -1284714892300779187}
   m_Layer: 0
   m_Name: DummyItem
   m_TagString: Untagged
@@ -117,7 +114,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359265570381211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29388fd17dbc0194ab5942353c072abc, type: 3}
+  m_Script: {fileID: 11500000, guid: b275e5f92732148048d7b77e264ac30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShapeType: 0
@@ -263,7 +260,6 @@ MonoBehaviour:
   m_Script: {fileID: 793611198, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBeHitAtSameTimeAsEnemy: 0
 --- !u!114 &114391434732298940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +278,11 @@ MonoBehaviour:
   startHealth: 100000000
   maxHealth: 100000000
   maxHealthMultiplier: 1
-  isBoss: 1
+  hasHealthRegeneration: 1
+  healInCombatAsWell: 0
+  healDirectlyWhenLeavingCombat: 0
+  healthPercentagePerFifthSecond: 100
+  startHealDelay: 5
   level: {fileID: 0}
 --- !u!114 &114556803251445676
 MonoBehaviour:
@@ -318,6 +318,7 @@ MonoBehaviour:
   blocksHangingWallObjects: 0
   appearInMapUI: 0
   mapColor: {r: 0, g: 0, b: 0, a: 0}
+  alignWithPlayerDirection: 0
 --- !u!114 &114717773080482599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,7 +328,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359265570381211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 775935493, guid: 24f8d2e3192c37342909f939d1554225, type: 3}
+  m_Script: {fileID: 775935493, guid: 8a9d2c58defc11e43be675b66a432bb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientationSupport: 0
@@ -395,36 +396,6 @@ MonoBehaviour:
   timeBeforeDestroy: 0
   timeBeforeLootDrop: 0
   skipDeathAnimation: 0
---- !u!114 &114724559256931504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359265570381211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1029918251, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disabled: 0
-  healInCombatAsWell: 0
-  healDirectlyWhenLeavingCombat: 0
-  healthPercentagePerFifthSecond: 100
-  startHealDelay: 5
---- !u!114 &114378629189375117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359265570381211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1824137328, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canOnlyFaceHorizontally: 0
 --- !u!114 &7071715807773103313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 178800199, guid: 3519ac58e5ff54941a4a69512016923c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playIdleAnimation: 1
 --- !u!114 &881898493577746402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,6 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actAsDestructibleWhileAboveHealthThreshold: 0
   dontBlockPlayerMovement: 0
+  trackLastAttacker: 0
 --- !u!114 &1133485972362148781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,20 +477,6 @@ MonoBehaviour:
   wantsToAttackTags: 
   cantAttackTags: 
   eatsTags: 
---- !u!114 &4907264644030368970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359265570381211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1620564429, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value: {fileID: 0}
-  timer: 0
 --- !u!114 &9131798582782731204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,6 +503,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cantBeAffectedByAuras: 0
+  cantBeAffectedByEnvironment: 0
+  cantBeAffectedByHealing: 0
   dontShowStatsTextOnItem: 0
   initialConditions: []
   level: {fileID: 0}
@@ -596,7 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276b4b9264304dc2b5f1e3feb621bc98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4113831804933025142
+--- !u!114 &8365828615642464507
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -605,12 +566,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359265570381211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -107720273, guid: 84f831e2f81ccd04d946db71e786f560, type: 3}
+  m_Script: {fileID: -2043779946, guid: a25fd8c6d4fbb824e9d4fe4466f12a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasLocalCooldown: 0
-  localCooldownSeconds: 0
---- !u!114 &6863528782699798710
+--- !u!114 &-1284714892300779187
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -619,6 +578,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359265570381211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 276b4b9264304dc2b5f1e3feb621bc98, type: 3}
+  m_Script: {fileID: 11500000, guid: 36e52149d4484410bafde5312e0b1ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  components:
+  - ObjectAuthoring
+  - InventoryItemAuthoring
+  - Unity.Physics.Authoring.PhysicsShapeAuthoring
+  - MineableAuthoring
+  - HealthAuthoring
+  - PlaceableObjectAuthoring
+  - AnimationAuthoring
+  - Unity.NetCode.GhostAuthoringComponent
+  - StateAuthoring
+  - TookDamageStateAuthoring
+  - DeathStateAuthoring
+  - IdleStateAuthoring
+  - Unity.Entities.Hybrid.Baking.LinkedEntityGroupAuthoring
+  - BossAuthoring
+  - EnemyAuthoring
+  - BehaviourTagsAuthoring
+  - FactionAuthoring
+  - SupportsConditionsAuthoring
+  - AlwaysDropVariationZeroAuthoring
+  - DummyMod.SpawnDummyAuthoring
+  - DummyMod.DummyAuthoring
+  - CoreLib.Submodules.ModEntity.Components.SupportsPooling
+  - Interaction.LocalInteractableAuthoring

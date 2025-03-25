@@ -50,9 +50,9 @@ MonoBehaviour:
   modPath: Assets\Mods\DummyMod
   forceReimport: 1
   buildBundles: 1
+  cacheBundles: 0
   buildLinux: 1
   buildBurst: 1
-  cachedBuild: 0
   assets:
   - path: Assets/Mods/DummyMod/DummyMod.asset
     hash: 26F6A3F8A5670476175754EF418CDF7044144C4AC189B81255C53969029FB0DB

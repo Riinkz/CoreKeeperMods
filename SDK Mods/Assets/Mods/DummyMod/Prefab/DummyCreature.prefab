@@ -19,20 +19,18 @@ GameObject:
   - component: {fileID: 114716709423320655}
   - component: {fileID: 114855499059021080}
   - component: {fileID: 114073873616023817}
-  - component: {fileID: 114724559256931504}
-  - component: {fileID: 114378629189375117}
   - component: {fileID: 7071715807773103313}
   - component: {fileID: 881898493577746402}
   - component: {fileID: 4014761255401663681}
   - component: {fileID: 8432270837391878973}
   - component: {fileID: 1133485972362148781}
-  - component: {fileID: 4907264644030368970}
   - component: {fileID: 9131798582782731204}
   - component: {fileID: 6443954341265133456}
   - component: {fileID: 6467545257263412825}
   - component: {fileID: 2131024907741643135}
-  - component: {fileID: 8620115747507614952}
   - component: {fileID: 3453700872448724010}
+  - component: {fileID: 5897842329121259555}
+  - component: {fileID: -6934730739576656272}
   m_Layer: 0
   m_Name: DummyCreature
   m_TagString: Untagged
@@ -114,7 +112,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359265570381211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29388fd17dbc0194ab5942353c072abc, type: 3}
+  m_Script: {fileID: 11500000, guid: b275e5f92732148048d7b77e264ac30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShapeType: 0
@@ -260,7 +258,6 @@ MonoBehaviour:
   m_Script: {fileID: 793611198, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canBeHitAtSameTimeAsEnemy: 0
 --- !u!114 &114391434732298940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +276,11 @@ MonoBehaviour:
   startHealth: 100000000
   maxHealth: 100000000
   maxHealthMultiplier: 1
-  isBoss: 1
+  hasHealthRegeneration: 1
+  healInCombatAsWell: 0
+  healDirectlyWhenLeavingCombat: 0
+  healthPercentagePerFifthSecond: 100
+  startHealDelay: 5
   level: {fileID: 0}
 --- !u!114 &114717773080482599
 MonoBehaviour:
@@ -290,7 +291,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1359265570381211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 775935493, guid: 24f8d2e3192c37342909f939d1554225, type: 3}
+  m_Script: {fileID: 775935493, guid: 8a9d2c58defc11e43be675b66a432bb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientationSupport: 0
@@ -311,7 +312,7 @@ MonoBehaviour:
   SupportedGhostModes: 3
   OptimizationMode: 0
   Importance: 15
-  prefabId: ecd2104147993a747bcbefe0763102e2
+  prefabId: d44eb7b0bcf3baa44a90a142e2bfe95a
   HasOwner: 0
   SupportAutoCommandTarget: 0
   TrackInterpolationDelay: 0
@@ -358,36 +359,6 @@ MonoBehaviour:
   timeBeforeDestroy: 0
   timeBeforeLootDrop: 0
   skipDeathAnimation: 0
---- !u!114 &114724559256931504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359265570381211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1029918251, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disabled: 0
-  healInCombatAsWell: 0
-  healDirectlyWhenLeavingCombat: 0
-  healthPercentagePerFifthSecond: 100
-  startHealDelay: 5
---- !u!114 &114378629189375117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359265570381211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1824137328, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canOnlyFaceHorizontally: 0
 --- !u!114 &7071715807773103313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,6 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 178800199, guid: 3519ac58e5ff54941a4a69512016923c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playIdleAnimation: 1
 --- !u!114 &881898493577746402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,6 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actAsDestructibleWhileAboveHealthThreshold: 0
   dontBlockPlayerMovement: 0
+  trackLastAttacker: 0
 --- !u!114 &1133485972362148781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,20 +440,6 @@ MonoBehaviour:
   wantsToAttackTags: 
   cantAttackTags: 
   eatsTags: 
---- !u!114 &4907264644030368970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359265570381211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1620564429, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value: {fileID: 0}
-  timer: 0
 --- !u!114 &9131798582782731204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,6 +466,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cantBeAffectedByAuras: 0
+  cantBeAffectedByEnvironment: 0
+  cantBeAffectedByHealing: 0
   dontShowStatsTextOnItem: 0
   initialConditions: []
   level: {fileID: 0}
@@ -535,20 +496,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e1a5c8d5db41cb8364186e3d693172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8620115747507614952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359265570381211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -107720273, guid: 84f831e2f81ccd04d946db71e786f560, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hasLocalCooldown: 0
-  localCooldownSeconds: 0
 --- !u!114 &3453700872448724010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,3 +508,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276b4b9264304dc2b5f1e3feb621bc98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5897842329121259555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359265570381211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2043779946, guid: a25fd8c6d4fbb824e9d4fe4466f12a15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-6934730739576656272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359265570381211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e52149d4484410bafde5312e0b1ab0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  components:
+  - Transform
+  - ObjectAuthoring
+  - InventoryItemAuthoring
+  - PhysicsShapeAuthoring
+  - MineableAuthoring
+  - HealthAuthoring
+  - AnimationAuthoring
+  - GhostAuthoringComponent
+  - StateAuthoring
+  - TookDamageStateAuthoring
+  - DeathStateAuthoring
+  - IdleStateAuthoring
+  - LinkedEntityGroupAuthoring
+  - BossAuthoring
+  - EnemyAuthoring
+  - BehaviourTagsAuthoring
+  - FactionAuthoring
+  - SupportsConditionsAuthoring
+  - AlwaysDropVariationZeroAuthoring
+  - DummyAuthoring
+  - SupportsPooling
+  - LocalInteractableAuthoring
+  - ComponentTracker

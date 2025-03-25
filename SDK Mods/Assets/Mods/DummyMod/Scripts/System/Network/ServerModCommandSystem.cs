@@ -41,7 +41,7 @@ namespace DummyMod
                             
                             case DummyCommandType.DESTROY_DUMMY:
                                 var target = rpc.entity0;
-                                ecb.DestroyEntity(target);
+                                ecb.SetComponentEnabled<EntityDestroyedCD>(target, true);
                                 break;
                         }
                     }
