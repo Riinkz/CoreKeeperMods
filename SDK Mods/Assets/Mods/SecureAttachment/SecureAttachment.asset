@@ -33,11 +33,13 @@ MonoBehaviour:
     dependencies:
     - modName: CoreLib
       required: 1
+    - modName: CoreLib.Resources
+      required: 1
+    - modName: CoreLib.Audio
+      required: 1
     - modName: CoreLib.Entity
       required: 1
     - modName: CoreLib.Equipment
-      required: 1
-    - modName: CoreLib.Audio
       required: 1
   modPath: Assets\Mods\SecureAttachment
   forceReimport: 1
@@ -47,19 +49,21 @@ MonoBehaviour:
   buildBurst: 1
   assets:
   - path: Assets/Mods/SecureAttachment/CrowbarSlot.prefab
-    hash: A3F86A065D2FCDE16E1EFF1884543C2B733FFCEBE14E35992AE5C94099EF17AE
+    hash: 5011133C4AFEC08CACE23DC99717270060867CFAB99A092E478804D556F85B19
+  - path: Assets/Mods/SecureAttachment/End Times.mp3
+    hash: B010D16C42CB239797DFDA635633B06A202D23871F123FB05DE67A099094FB78
   - path: Assets/Mods/SecureAttachment/Item/WoodenWrench.prefab
-    hash: 16FC9B97FB3635C94BDB41318C8EB6FE725E88CBF71C976130AE7728A895A6E9
+    hash: BFAF2F441221B62AB785E8080625A77CDC023E90257EFCC21EEB89F3FB1E5F1C
   - path: Assets/Mods/SecureAttachment/Item/Wrench.prefab
-    hash: B98DB1396FFD25F09F52B9FAAC69AFDE447EFD032BDD9B8AA5181267461164FC
+    hash: 7772F358341628EC56676823A3C31E88C67168D6C07B46B87997F925C8F9753A
   - path: Assets/Mods/SecureAttachment/Item/WrenchWorkbench.asset
-    hash: 96E278AC9DEC6AB040EF69F0B0C8C692AA9F54AE5E20237A634585BDA0889E07
+    hash: FE56CD81CFFBF06D6C683E8CF42FB49813891D46C09BC98EE23AF96568AD6278
   - path: Assets/Mods/SecureAttachment/Localization/Localization.csv
     hash: C135FD94AA52CEDCE546F6C936C55B50F642FF1305379B69317DCB18AF90D833
   - path: Assets/Mods/SecureAttachment/SecureAttachment.asset
-    hash: 2E722A9B0121A86969F69D9A6D50F5EE33CE164832F26CDE1257F87C2A837B96
+    hash: 3C9A5AAF3987735422871F9F0DD324BA85C026F27F52BAB7F38998CE5BD6EB56
   - path: Assets/Mods/SecureAttachment/SecureAttachment_modio.asset
-    hash: 89978AAD6860F9926915D335B3EDA1D65745F637427F0443B649811DB57FFBDF
+    hash: 77CFFE6B2C9253E13F162CDF50786ADAB6008D8C52F2089EC23418120999659F
   - path: Assets/Mods/SecureAttachment/SpriteAssetManifest.asset
     hash: 497BA3269B5E53AB60E3428C11982EC7685C6C1A3D89A9AEEFB89C3404947C80
   - path: Assets/Mods/SecureAttachment/Textures/wb-0.png
@@ -77,7 +81,7 @@ MonoBehaviour:
   - path: Assets/Mods/SecureAttachment/Textures/wrench.png
     hash: 8E333164E3F267D78C00BC2631F72752BAF5CD2DC7DF4A3ABF6F50CEA9131F6C
   - path: Assets/Mods/SecureAttachment/Textures/WrenchWorkbenchSkin.asset
-    hash: 365209DA293BD70BDF1791A6721624948586D6398800E52168E28EEB5FA6FCD7
+    hash: 8B2754BA4C2BE889D0DB176AB16F291168A3E755BB348CFBD45FB702D51A54C9
   - path: Assets/Mods/SecureAttachment/wrench-sound.ogg
     hash: 42FFB49855DFA224A5C387F74F8097A43575EA0202A203FC3031D68D9FB65F12
   lastBuildLinux: 1

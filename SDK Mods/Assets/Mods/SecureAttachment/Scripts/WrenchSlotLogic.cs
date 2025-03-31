@@ -34,7 +34,7 @@ namespace SecureAttachment
         }
 
         public bool Update(
-            EquipmentUpdateAspect equipmentAspect,
+            EquipmentUpdateAspect aspect,
             EquipmentUpdateSharedData sharedData,
             LookupEquipmentUpdateData lookupData,
             bool interactHeld,
@@ -42,20 +42,20 @@ namespace SecureAttachment
         {
             var nativeList = new NativeList<PlacementHandler.EntityAndInfoFromPlacement>(Allocator.Temp);
             PlacementHandler.UpdatePlaceablePosition(
-                equipmentAspect.equippedObjectCD.ValueRO.equipmentPrefab,
+                aspect.equippedObjectCD.ValueRO.equipmentPrefab,
                 ref nativeList,
-                equipmentAspect,
+                aspect,
                 sharedData,
                 lookupData);
             nativeList.Dispose();
 
             if (!secondInteractHeld) return false;
 
-            ref PlacementCD placement = ref equipmentAspect.placementCD.ValueRW;
+            ref PlacementCD placement = ref aspect.placementCD.ValueRW;
 
             var pos = placement.bestPositionToPlaceAt;
 
-            ObjectDataCD objectData = equipmentAspect.equippedObjectCD.ValueRO.containedObject.objectData;
+            ObjectDataCD objectData = aspect.equippedObjectCD.ValueRO.containedObject.objectData;
             var prefabEntity = PugDatabase.GetPrimaryPrefabEntity(
                 objectData.objectID,
                 sharedData.databaseBank.databaseBankBlob,
@@ -80,15 +80,15 @@ namespace SecureAttachment
 
                 if (math.all(objectPos == pos.ToInt2()))
                 {
-                    queueHitLookup.SetComponentEnabled(equipmentAspect.entity, true);
-                    float cooldown = (lookupData.godModeLookup.IsComponentEnabled(equipmentAspect.entity) ? 0.15f : 0.25f);
-                    EquipmentSlot.StartCooldownForItem(equipmentAspect, sharedData, lookupData, cooldown);
+                    queueHitLookup.SetComponentEnabled(aspect.entity, true);
+                    float cooldown = (lookupData.godModeLookup.IsComponentEnabled(aspect.entity) ? 0.15f : 0.25f);
+                    EquipmentSlot.StartCooldownForItem(aspect, sharedData, lookupData, cooldown);
 
                     if (mountedCd.wrenchTier <= wrenchCd.wrenchTier)
                     {
                         EntityUtility.Destroy(
                             target, false, 
-                            equipmentAspect.entity, 
+                            aspect.entity, 
                             lookupData.healthLookup,
                             lookupData.entityDestroyedLookup, 
                             lookupData.dontDropSelfLookup, 
@@ -96,15 +96,15 @@ namespace SecureAttachment
                             lookupData.killedByPlayerLookup,
                             lookupData.plantLookup, 
                             lookupData.summarizedConditionEffectsBufferLookup, 
-                            ref equipmentAspect.randomCD.ValueRW.Value, 
+                            ref aspect.randomCD.ValueRW.Value, 
                             lookupData.moveToPredictedByEntityDestroyedLookup, 
                             sharedData.currentTick);
 
-                        DoEffect(equipmentAspect, sharedData, SecureAttachmentMod.wrenchEffect, pos);
+                        DoEffect(aspect, sharedData, SecureAttachmentMod.wrenchEffect, pos);
                     }
                     else
                     {
-                        DoEffect(equipmentAspect, sharedData, EffectID.FailedHit, pos);
+                        DoEffect(aspect, sharedData, EffectID.FailedHit, pos);
                     }
 
                     return true;

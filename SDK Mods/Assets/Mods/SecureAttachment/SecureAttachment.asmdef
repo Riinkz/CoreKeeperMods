@@ -19,9 +19,10 @@
         "Unity.ResourceManager",
         "PugMod.SDK",
         "CoreLib",
+        "CoreLib.Resources",
+        "CoreLib.Audio",
         "CoreLib.Entity",
-        "CoreLib.Equipment",
-        "CoreLib.Audio"
+        "CoreLib.Equipment"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

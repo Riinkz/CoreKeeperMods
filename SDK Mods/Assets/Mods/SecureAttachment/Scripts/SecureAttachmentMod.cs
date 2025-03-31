@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CoreLib;
 using CoreLib.Audio;
-//using CoreLib.Audio;
 using CoreLib.Data.Configuration;
 using CoreLib.Equipment;
 using CoreLib.Submodules.ModEntity;
@@ -12,7 +11,6 @@ using CoreLib.Util.Extensions;
 using PugMod;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Logger = CoreLib.Util.Logger;
 using Object = UnityEngine.Object;
 
@@ -74,7 +72,7 @@ namespace SecureAttachment
         public static ConfigFile Config;
 
         public const string MOD_ID = "SecureAttachment";
-        public const string VERSION = "2.0.0";
+        public const string VERSION = "2.0.2";
         public const string MOD_NAME = "Secure Attachment";
 
         internal static LoadedMod modInfo;
