@@ -5,13 +5,16 @@ namespace KeepFarming
     [HarmonyPatch]
     public class Plant_Patch
     {
-        [HarmonyPatch(typeof(Plant), "UpdateSkin")]
+        [HarmonyPatch(typeof(SpriteSkinFromEntityAndSeason), "UpdateSkin")]
         [HarmonyPrefix]
-        public static void OnUpdateSkin(ref int currentVariation)
+        public static void OnUpdateSkin(SpriteSkinFromEntityAndSeason __instance, ref int variation)
         {
-            if (currentVariation == 4)
+            var plant = __instance.gameObject.GetComponent<Plant>();
+            if (plant == null) return;
+            
+            if (variation == 4)
             {
-                currentVariation -= 2;
+                variation -= 2;
             }
         }
     }
