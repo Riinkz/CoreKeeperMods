@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5003369973408471976}
   - component: {fileID: 4268591195565689869}
   - component: {fileID: 3893629905809948151}
+  - component: {fileID: 6184059798885571689}
   m_Layer: 0
   m_Name: AnyFruit
   m_TagString: Untagged
@@ -25,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751306902428914419}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.6684313, y: 2.7379684, z: -0.24811935}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4268591195565689869
 MonoBehaviour:
@@ -68,7 +69,6 @@ MonoBehaviour:
   m_Script: {fileID: 244469479, guid: 9a1db145e9314404d8da91bdc1557235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onlyExistsInSeason: 0
   sellValue: -1
   buyValueMultiplier: 1
   icon: {fileID: -1663416574, guid: bf6606719879ef043b6f817c935bc5ad, type: 3}
@@ -77,3 +77,18 @@ MonoBehaviour:
   isStackable: 0
   requiredObjectsToCraft: []
   craftingTime: 0
+--- !u!114 &6184059798885571689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751306902428914419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e52149d4484410bafde5312e0b1ab0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  components:
+  - ObjectAuthoring
+  - InventoryItemAuthoring

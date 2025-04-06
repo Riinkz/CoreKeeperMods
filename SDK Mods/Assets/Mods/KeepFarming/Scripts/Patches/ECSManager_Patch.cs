@@ -8,6 +8,8 @@ using CoreLib.Localization;
 using CoreLib.Util.Extensions;
 using HarmonyLib;
 using KeepFarming.Components;
+using KeepFarming.Util;
+using Pug.Sprite;
 using PugConversion;
 using PugMod;
 using Unity.Entities;
@@ -21,6 +23,9 @@ namespace KeepFarming
     public class ECSManager_Patch
     {
         private static Regex camelCaseSplitPattern = new Regex("([A-Z])", RegexOptions.Compiled);
+        
+        internal static Dictionary<CookingIngredientCD, Texture2D> gradientMaps = new Dictionary<CookingIngredientCD, Texture2D>(new CookingIngredientComparer());
+
         
         [HarmonyPatch(typeof(ECSManager), nameof(ECSManager.Init))]
         [HarmonyPrefix]
@@ -47,6 +52,8 @@ namespace KeepFarming
                 var flower = monoBehaviour.GetComponent<FlowerAuthoring>();
                 if (cookingIngredient == null ||
                     flower == null) continue;
+
+                AddGradientMap(cookingIngredient, monoBehaviour.gameObject.name);
                 
                 if (monoBehaviour is EntityMonoBehaviourData data)
                 {
@@ -66,6 +73,38 @@ namespace KeepFarming
                         flower);
                 }
             }
+            SpriteAssetManager_Patch.ReloadAssets();
+        }
+
+        public static void AddGradientMap(CookingIngredientAuthoring authoring, string name)
+        {
+            var key = new CookingIngredientCD()
+            {
+                darkestColor = authoring.darkestColor,
+                darkColor = authoring.darkColor,
+                brightColor = authoring.brightColor,
+                brightestColor = authoring.brightestColor
+            };
+
+            if (gradientMaps.ContainsKey(key)) return;
+            
+            var gradientMap = new Texture2D(256, 1, TextureFormat.RGBA32, false)
+            {
+                filterMode = FilterMode.Point,
+                name = $"gm_mod_{name.ToLower()}"
+            };
+
+            for (int i = 0; i < 64; i++)
+            {
+                gradientMap.SetPixel(i, 0, key.darkestColor);
+                gradientMap.SetPixel(64 + i, 0, key.darkColor);
+                gradientMap.SetPixel(128 + i, 0, key.brightColor);
+                gradientMap.SetPixel(192 + i, 0, key.brightestColor);
+            }
+            
+            gradientMap.Apply();
+                
+            gradientMaps[key] = gradientMap;
         }
 
         [HarmonyPatch(typeof(ConversionManager), "CreateAndEnqueue")]

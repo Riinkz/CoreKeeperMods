@@ -83,6 +83,7 @@
         "Sentry.Unity.Native.dll",
         "ZipSaveFolder.dll",
         "0Harmony.dll",
+        "SpriteInstancing.dll",
         "KeepFarming.Access.dll"
     ],
     "autoReferenced": false,

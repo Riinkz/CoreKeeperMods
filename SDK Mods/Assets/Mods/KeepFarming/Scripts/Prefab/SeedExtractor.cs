@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using KeepFarming;
+using Pug.Sprite;
+using PugProperties;
 using PugTilemap;
 using UnityEngine;
 
@@ -7,30 +10,30 @@ namespace Mods.KeepFarming.Scripts.Prefab
 {
     public class SeedExtractor : CraftingBuilding
     {
-        [SerializeField] private SpriteRenderer baseRenderer;
-        [SerializeField] private SpriteRenderer mushRenderer;
-        [SerializeField] private ColorReplacer mushColorReplacer;
-
-        [SerializeField] private Sprite[] baseSprites;
-        [SerializeField] private Sprite[] mushSprites;
-
-        public int ticksPerFrame = 1;
+        [SerializeField] private SpriteObject baseRenderer;
+        [SerializeField] private SpriteObject mushRenderer;
 
         private bool isActive;
-        private int currentFrame;
-        private int currentFrameTicks;
+        private bool prevIsActive;
 
-
+        private ObjectDataCD lastItem;
+        
+        private static readonly int baseAnim = Property.StringToHash("seed-extractor-base");
+        private static readonly int mushAnim = Property.StringToHash("plant-mush");
+        
         public override void OnOccupied()
         {
             base.OnOccupied();
             Manager.multiMap.SetHiddenTile(RenderPosition.RoundToInt2(), 4, TileType.circuitPlate, 0);
+            prevIsActive = false;
         }
 
         protected override void OnHide()
         {
             Manager.multiMap.ClearHiddenTileOfType(RenderPosition.RoundToInt2(), TileType.circuitPlate);
             base.OnHide();
+            prevIsActive = false;
+            lastItem = default;
         }
 
         public override void ManagedLateUpdate()
@@ -45,48 +48,39 @@ namespace Mods.KeepFarming.Scripts.Prefab
             if (!isActive) return;
             
             ObjectDataCD inputData = craftingHandler.inventoryHandler.GetObjectData(0);
+            
+            if (lastItem.Equals(inputData)) return;
+            lastItem = inputData;
+            
             if (!SeedExtractorSystem.seedExtractorRecipes.IsCreated || 
                 !SeedExtractorSystem.seedExtractorRecipes.ContainsKey(inputData))
             {
-                mushColorReplacer.SetActiveColorReplacement(0);
+                mushRenderer.primaryGradientMap = null;
+                mushRenderer.ApplyVisualChange();
                 return;
             }
             
             var cookingIngredient = PugDatabase.GetComponent<CookingIngredientCD>(inputData);
-            var replaceColors = mushColorReplacer.colorReplacementData.replacementColors[0];
-                
-            replaceColors.colorList[0] = cookingIngredient.brightestColor;
-            replaceColors.colorList[1] = cookingIngredient.brightColor;
-            replaceColors.colorList[2] = cookingIngredient.darkColor;
-            replaceColors.colorList[3] = cookingIngredient.darkestColor;
-            
-            mushColorReplacer.SetActiveColorReplacement(1);
+            mushRenderer.primaryGradientMap = ECSManager_Patch.gradientMaps.GetValueOrDefault(cookingIngredient);
+            mushRenderer.ApplyVisualChange();
         }
 
         private void UpdateAnimation()
         {
+            if (isActive == prevIsActive) return;
+            prevIsActive = isActive;
+            
             if (!isActive)
             {
-                currentFrame = 0;
-                currentFrameTicks = 0;
                 mushRenderer.gameObject.SetActive(false);
-                baseRenderer.sprite = baseSprites[currentFrame];
+                mushRenderer.StopAnimation();
+                baseRenderer.StopAnimation();
                 return;
             }
             
             mushRenderer.gameObject.SetActive(true);
-
-            currentFrameTicks++;
-            if (currentFrameTicks >= ticksPerFrame)
-            {
-                currentFrame++;
-                if (currentFrame >= baseSprites.Length)
-                    currentFrame = 0;
-                currentFrameTicks = 0;
-            }
-
-            baseRenderer.sprite = baseSprites[currentFrame];
-            mushRenderer.sprite = mushSprites[currentFrame];
+            baseRenderer.PlayAnimation(baseAnim);
+            mushRenderer.PlayAnimation(mushAnim);
         }
 
         protected override void OnActive()
@@ -100,30 +94,6 @@ namespace Mods.KeepFarming.Scripts.Prefab
             base.OnInactive();
             isActive = false;
         }
-
-        protected void OnValidate()
-        {
-            baseSprites ??= Array.Empty<Sprite>();
-            mushSprites ??= Array.Empty<Sprite>();
-            if (mushSprites.Length != baseSprites.Length)
-            {
-                Array.Resize(ref mushSprites, baseSprites.Length);
-            }
-
-            if (mushColorReplacer != null)
-            {
-                var repColors = mushColorReplacer.colorReplacementData.replacementColors;
-                if (repColors.Count <= 0)
-                {
-                    repColors.Add(new ColorList());
-                }
-
-                var colorList = repColors[0].colorList;
-                while (colorList.Count < mushColorReplacer.colorReplacementData.srcColors.Count)
-                {
-                    colorList.Add(Color.black);
-                }
-            }
-        }
+        
     }
 }
